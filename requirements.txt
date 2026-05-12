@@ -1,0 +1,9 @@
+numpy
+pandas
+requests
+scikit-learn
+streamlit
+seaborn
+matplotlib
+plotly
+tensorflow; python_version < "3.14"
