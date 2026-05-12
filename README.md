@@ -180,7 +180,7 @@ If you haven't pushed your local project to a GitHub repository yet, run the fol
 ```bash
 git init
 git add app.py advanced_features.py requirements.txt *.csv
-git commit -m "think of this git message by yourself"
+git commit -m "think of this git message by yourself ;)"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/k-heatpulse.git
 git push -u origin main
