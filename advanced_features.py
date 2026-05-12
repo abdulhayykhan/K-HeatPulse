@@ -88,7 +88,6 @@ def render_xai_panel(bundle: Any) -> None:
             _compute_and_render_shap(bundle)
 
 
-@st.cache_data(show_spinner=False)
 def _cached_shap_values(
     rf_model,
     background_hash: str,
