@@ -115,52 +115,51 @@ TARGET = 'is_hot_day' (binary: 1 = heatwave day, 0 = normal)
 
 ### Prerequisites
 
-* **Python**: 3.11 or 3.12 (TensorFlow/Keras not available on 3.14)
-* **pip**: Modern package manager
+* **Python**: 3.11 or 3.12 (Recommended for full TensorFlow/Keras support)
+* **Git**: Version control system
+* **pip**: Modern Python package manager
 
-### Step 1: Clone or Navigate to Project
+### Step 1: Clone the Repository
+
+Open your terminal and clone the project to your local machine:
 
 ```bash
-cd "c:\Users\USER\OneDrive\Desktop\Programming for AI\Lab 14"
+git clone https://github.com/abdulhayykhan/K-HeatPulse.git
+cd K-HeatPulse
 
 ```
 
 ### Step 2: Install Dependencies
+
+Install the required Python packages using `pip`:
 
 ```bash
 pip install -r requirements.txt
 
 ```
 
-**Note**: TensorFlow is excluded on Python 3.14+ (no available wheel). For the full DL brain, use Python 3.11–3.13.
-
-### Optional: Advanced Features
-
-If you want **SHAP explainability** (Feature D: XAI Panel) and **STL trend decomposition** (Feature F), install optional packages:
-
-```bash
-pip install shap statsmodels
-
-```
-
-These features will automatically activate when packages are available. Without them, the dashboard gracefully degrades (Features D and F are skipped).
+> **Note**: TensorFlow is currently excluded on Python 3.14+ (no stable wheel available). To utilize the full Deep Learning (Neural Network) brain, please ensure your environment is running Python 3.11–3.13.
 
 ### Step 3: Configure API Key
 
-Streamlit automatically loads secrets from `secrets.toml`:
+The application relies on the Visual Crossing Weather API for real-time data. Streamlit automatically securely loads API keys from a secrets file.
 
-**File**: `secrets.toml` (must be in project root)
+1. Create a folder named `.streamlit` in the root of the project.
+2. Inside that folder, create a file named `secrets.toml`.
+3. Add your API key to the file:
+
+**File**: `.streamlit/secrets.toml`
 
 ```toml
 VISUAL_CROSSING_API_KEY="YOUR_FREE_API_KEY_HERE"
 
 ```
 
-**Get a Free API Key**:
+**How to get a Free API Key**:
 
 1. Visit [Visual Crossing](https://www.visualcrossing.com/weather-api)
 2. Sign up for the free tier (1,000 calls/day, no credit card required)
-3. Copy your API key and paste it into `secrets.toml`
+3. Copy your API key and paste it into the `secrets.toml` file.
 
 ---
 
@@ -168,86 +167,81 @@ VISUAL_CROSSING_API_KEY="YOUR_FREE_API_KEY_HERE"
 
 ### Prerequisites for Cloud Deployment
 
-* GitHub account with a public or private repository
-* Repository containing `app.py`, `requirements.txt`, `secrets.toml`, and CSV data files
-* Visual Crossing API key
+* A GitHub account with the repository pushed.
+* The `app.py`, `requirements.txt`, `secrets.toml` (kept local), and CSV data files.
+* Your Visual Crossing API key.
 
 ### Deployment Steps
 
 #### 1. Push Code to GitHub
 
+If you haven't pushed your local project to a GitHub repository yet, run the following:
+
 ```bash
 git init
 git add app.py advanced_features.py requirements.txt *.csv
-git commit -m "Production-ready K-HeatPulse for Streamlit Cloud"
+git commit -m "think of this git message by yourself"
+git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/k-heatpulse.git
 git push -u origin main
 
 ```
 
-#### 2. Create Streamlit Cloud App
+*(Note: Ensure your `.gitignore` includes `.streamlit/secrets.toml` so you don't leak your API key).*
 
-1. Visit [Streamlit Cloud](https://streamlit.io/cloud)
-2. Click **"New App"** → **"From GitHub repo"**
-3. Select your repository and main file (`app.py`)
-4. Click **"Deploy"**
+#### 2. Create the Streamlit Cloud App
+
+1. Log in to [Streamlit Cloud](https://streamlit.io/cloud).
+2. Click **"New App"** → **"From GitHub repo"**.
+3. Select your `k-heatpulse` repository and set the main file path to `app.py`.
+4. Click **"Deploy"**.
 
 #### 3. Configure Secrets in Streamlit Cloud
 
-1. In your app's **Settings** → **Secrets**
-2. Paste:
+Since your `secrets.toml` is not on GitHub, you must provide the key to the cloud server:
+
+1. Go to your live app's **Settings** → **Secrets** (via the three-dot menu).
+2. Paste the exact same format used locally:
 
 ```toml
 VISUAL_CROSSING_API_KEY="YOUR_FREE_API_KEY_HERE"
 
 ```
 
-3. Save and redeploy
+3. Click **Save** to automatically reboot the app with the injected key.
 
-#### 4. (Optional) Specify Python Version
+#### 4. Configure Python Environment (Optional)
 
-Create `.streamlit/config.toml` in your repo:
+To guarantee TensorFlow support, force the Streamlit server to use Python 3.11. In your app settings on the Streamlit dashboard, set the Python version to **3.11** before deploying.
 
-```toml
-[client]
-python_version = "3.11"
+### Recommended Cloud Settings
 
-```
-
-This ensures TensorFlow DL brain works if you want full DL support.
-
-### Recommended Settings
-
-* **Memory**: 1 GB (sufficient for model training on Karachi dataset)
-* **Timeout**: 120 seconds (default; enough for live API calls + predictions)
-* **Python Version**: 3.11 (for TensorFlow support); 3.14 also works but disables DL brain
-
-### After Deployment
-
-* Your app will be live at: `https://share.streamlit.io/YOUR_USERNAME/k-heatpulse/main/app.py`
-* Model training happens once per session and is cached for performance
-* Live API calls are cached for 600 seconds to avoid quota exhaustion
+* **Memory**: 1 GB (Sufficient for training Random Forest/Neural Net on the Karachi dataset).
+* **Timeout**: 120 seconds (Default).
+* **Python Version**: 3.11 (Required for DL brain; 3.14 will gracefully disable the DL features).
 
 ---
 
-## 🎮 Running the App
+## 🎮 Running the App Locally
 
 ### Launch the Dashboard
+
+Once installed, spin up the local server:
 
 ```bash
 streamlit run app.py
 
 ```
 
-Streamlit will open the app in your default browser at `http://localhost:8501`
+Streamlit will automatically open the dashboard in your default web browser at `http://localhost:8501`.
 
 ### Features to Explore
 
-1. Click **"Get Live Karachi Stats"** to fetch current conditions
-2. Click **"Predict with ML"** or **"Predict with DL"** to see model predictions
-3. View the heat map to compare 2000 vs. the latest year
-4. Check model metrics in the **Model Comparison** table
-5. Inspect the **Dataset Snapshot** in the sidebar
+1. **Live Pulse**: Click **"Get Live Karachi Stats"** to fetch current conditions via the API.
+2. **The Duel**: Click **"Predict with ML"** or **"Predict with DL"** to compare model predictions and risk assessments.
+3. **Heat Mapping**: View the seaborn heatmap to compare temperature shifts from 2000 vs. the latest year.
+4. **Model Diagnostics**: Check accuracy and ROC AUC scores in the **Model Comparison** table.
+5. **Context**: Inspect the **Dataset Snapshot** in the sidebar for training/testing sizes and data coverage.
 
 ---
 
