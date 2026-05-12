@@ -147,7 +147,20 @@ def _compute_and_render_shap(bundle: Any) -> None:
         explain_matrix,
     )
 
-    shap_row = shap_values[0] if shap_values.ndim == 2 else shap_values
+    shap_array = np.asarray(shap_values)
+    if shap_array.ndim == 3:
+        shap_row = shap_array[0, :, 1] if shap_array.shape[-1] > 1 else shap_array[0, :, 0]
+    elif shap_array.ndim == 2:
+        shap_row = shap_array[0]
+    else:
+        shap_row = shap_array.reshape(-1)
+
+    shap_row = np.asarray(shap_row, dtype=np.float32).reshape(-1)
+    if len(feature_names) != len(shap_row):
+        limit = min(len(feature_names), len(shap_row))
+        feature_names = list(feature_names)[:limit]
+        shap_row = shap_row[:limit]
+
     shap_frame = pd.DataFrame({"feature": feature_names, "shap_value": shap_row})
     shap_frame["abs_value"] = shap_frame["shap_value"].abs()
     shap_frame = shap_frame.nlargest(15, "abs_value").sort_values("shap_value")
