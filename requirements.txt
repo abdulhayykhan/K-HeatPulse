@@ -6,4 +6,6 @@ streamlit
 seaborn
 matplotlib
 plotly
+shap
+statsmodels
 tensorflow; python_version < "3.14"
