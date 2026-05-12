@@ -1,6 +1,7 @@
 # 🔥 K-HeatPulse: Karachi Heat Oracle
 
 **K-HeatPulse** is a real-time meteorological forecasting and urban heat risk dashboard. Built as the Lab 14 Complex Computing Activity for the Programming for AI course in my 4th semester of BS Artificial Intelligence (DUET), it moves beyond traditional static weather reporting to provide a predictive "Heat Oracle" experience. It utilizes 25 years of historical climate data alongside live Visual Crossing API ingestion to directly compare Machine Learning (Random Forest) and Deep Learning (Neural Networks) approaches, offering advanced features like side-by-side architectural evaluations and real-time urban heat profiling.
+
 ---
 
 ## 🎯 Project Overview
